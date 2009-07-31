@@ -184,6 +184,14 @@ Screw.Unit(function() {
 				myMock.should_receive('shout').exactly('once');
 				myMock.shout()
 			});
+			
+			it("should restore existing methods when smoke is reset", function() {
+			  myMock = mock({ say: "hello", shout: function() { return this.say.toUpperCase(); } });
+				myMock.should_receive('shout').exactly('once').and_return("hi");
+				expect(myMock.shout()).to(equal,'hi');
+				Smoke.reset();
+				expect(myMock.shout()).to(equal,'HELLO');
+			});
 		});
 		
 		describe("anonymous functions", function() {
