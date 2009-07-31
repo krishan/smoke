@@ -89,11 +89,19 @@ Screw.Unit(function() {
 				mockObj.should_receive('foo').with_arguments('bar').exactly('once');
 				mockObj.foo('bar')
 			});
+
 			it("should only mock the exact method signature when with_arguments is used with no arguments", function() {
         mockObj = mock();
         mockObj.should_receive('foo').with_arguments().exactly('once');
         mockObj.foo('should ignore this call');
         mockObj.foo();
+			});
+
+			it("should accept any arguments when with_any_arguments is used", function() {
+			  mockObj = mock()
+				mockObj.should_receive('foo').with_any_arguments().exactly('twice').and_return("bar");
+				expect(mockObj.foo()).to(equal, "bar");
+				expect(mockObj.foo("a", "lot", "of", "arguments")).to(equal, "bar");
 			});
 		});
 		
